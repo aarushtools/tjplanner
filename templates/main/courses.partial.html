@@ -1,0 +1,59 @@
+{% load static %}
+{% for course in courses %}
+    <div class="text-sm m-2 flex justify-center max-w-[23.5vw] category no-drop" data-sort="{{ forloop.counter }}">
+        {{ course.category.name|slice:":40" }}
+    </div>
+    <div class="rounded-lg bg-gray-300 m-2 min-h-14 flex relative course-draggable flex-col max-w-[23.5vw] transition-all duration-500 ease-in-out no-drop group select-none" draggable="true" id="{{ course.course_id }}" data-name="{{ course.name }}" data-credit="{{ course.credit }}" data-sort="{{ forloop.counter }}" data-grades="{{ course.grades_list }}" data-prereq-ids="{{ course.prereq_ids }}" data-coreq-ids="{{ course.coreq_ids }}" data-category="{{ course.category.name }}" data-course-type="{{ course.course_type }}" data-course-weight="{{ course.weight }}" data-num="{{ course.number }}">
+        <div class="relative flex items-center grow justify-center no-drop" id="title-box">
+            <p class="no-drop group-hover:scale-110 transition-transform duration-300" id="title">{{ course.name }}</p>
+            <button class="expand-btn transform transition-all duration-500 ml-1.5 no-drop group-hover:ml-3">
+                <span class="text-sm no-drop">▼</span>
+            </button>
+        </div>
+        <div class="hidden text-sm p-3 description no-drop" id="description">
+            {{ course.description }}
+            <br>
+            <p class="mt-1"><b>Weight:</b> +{{ course.weight }}</p>
+            <p><b>Grades:</b> {{ course.grades_list }}</p>
+            {% if course.prerequisites %}
+                <p><b>Prerequisites:</b> {{ course.prerequisites }}</p>
+            {% endif %}
+            {% if course.corequisites %}
+                <p><b>Corequisites:</b> {{ course.corequisites }}</p>
+            {% endif %}
+            <br>
+            <b class="text-xs">{{ course.description_bold }}</b>
+        </div>
+        <div class="absolute right-2 text-xs mt-0.5 no-drop flex course-icons-info">
+            <p class="course-id inline no-drop">
+                {{ course.course_id }}
+            </p>
+            {% if course.course_offered == "ONLINE" %}
+                <img alt="online" src="{% static "main/img/online.svg" %}" class="w-4 h-4 ml-1">
+            {% elif course.course_offered == "ACADEMY" %}
+                <img alt="academy" src="{% static "main/img/bus.png" %}" class="w-4 h-4 ml-1">
+            {% endif %}
+            {% if course.course_type == "AP" %}
+                <p class="text-red-600 font-bold inline ml-1">
+                    AP
+                </p>
+            {% elif course.course_type == "IB" %}
+                <p class="text-orange-600 font-bold inline ml-1">
+                    IB
+                </p>
+            {% elif course.course_type == "DE" %}
+                <p class="text-green-600 font-bold inline ml-1">
+                    DE
+                </p>
+            {% elif course.course_type == "HN" %}
+                <p class="text-yellow-600 font-bold inline ml-1">
+                    HN
+                </p>
+            {% elif course.course_type == "POST" %}
+                <p class="text-blue-600 font-bold inline ml-1">
+                    POST
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}

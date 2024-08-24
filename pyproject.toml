@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "tjplanner"
+version = "0.1.0"
+description = ""
+authors = ["aarushtools"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1"
+fcps-insys-api = "^0.1.1"
+django-tailwind = {extras = ["reload"], version = "^3.8.0"}
+whitenoise = "^6.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

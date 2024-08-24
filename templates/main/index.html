@@ -1,0 +1,199 @@
+{% extends "master.html" %}
+{% load static %}
+{% block head %}
+    <title>Course Planner</title>
+    <script src="{% static "main/index.js" %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="bg-gray-300 min-w-full min-h-10 flex justify-between items-center" id="title-bar">
+        <h1 class="font-bold ml-4 text-xl -mt-0.5">plan.sites.tjhsst.edu</h1>
+        <div class="flex">
+            <img src="{% static "main/img/share.svg" %}" alt="Share" class="w-7 h-7 hover:scale-110 transition-transform duration-300 mr-3" id="share-btn">
+            <a href="https://github.com/aarushtools/tjplanner">
+                <img src="{% static "main/img/github-mark.svg" %}" alt="Github" class="w-7 h-7 hover:scale-110 transition-transform duration-300 mr-3">
+            </a>
+        </div>
+    </div>
+
+    <!-- Main page content -->
+
+    <div class="flex mt-7 overflow-hidden">
+
+        <!-- Course listbox holder and courses -->
+
+        <div class="bg-gray-200 min-w-[25.5vw] max-h-[90vh] rounded-2xl ml-4 shadow-xl flex flex-col overflow-y-scroll scrollbar-thumb-rounded-xl scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-gray-50 course-container" id="listbox">
+            <!-- Search bar and button -->
+            <div class="relative">
+                <label>
+                    <input type="text" class="rounded-l-2xl active:outline-blue-200 outline ml-2 mt-2 w-3/4 outline-blue-800" placeholder="Search by course name or id" id="search-input">
+                </label>
+                <button class="bg-blue-300 w-1/5 h-10 rounded-r-2xl outline outline-blue-800 mt-[0.55rem] absolute">
+                    <img src="{% static "main/img/search.svg" %}" alt="Search" class="w-7 h-7 md:ml-4 lg:ml-7 invert">
+                </button>
+            </div>
+            
+            {% include "main/courses.partial.html" with courses=courses %}
+        </div>
+
+        <!-- Grid -->
+
+        <div class="grid grid-cols-4 grid-rows-9 ml-10 mt-4 gap-3 relative">
+            {% for i in course_list %}
+                <div class="bg-gray-200 max-h-[8.45vh] w-[9.4vw] outline rounded-md coursebox transition-all duration-500 ease-in-out course-container course-grid-box select-none group" data-courses="0" data-grade="{{ i }}"></div>
+            {% endfor %}
+        </div>
+
+        <!-- Prefs box -->
+
+        <div class="bg-gray-200 w-[28.7vw] min-h-[90vh] rounded-2xl ml-7 shadow-xl relative flex flex-col" id="prefs-box">
+          <div class="flex grow justify-start">
+                <!-- Checklist -->
+                <div class="mt-4 ml-3" id="checklist">
+                     <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="rs1" disabled>
+                        <label for="rs1">RS1 is your first math class</label>
+                    </div>
+                     <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="ibet" disabled>
+                        <label for="ibet">IBET (Biology, English 9, Design and Tech)</label>
+                    </div>
+                     <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="hpe" disabled>
+                        <label for="hpe">HPE 9 & 10</label>
+                    </div>
+                     <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="hum" disabled>
+                        <label for="hum">HUM 1 (World History 2 & English 10)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="hum_two" disabled>
+                        <label for="hum_two">HUM 2 (US/VA History & English 11)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="comp_sci" disabled>
+                        <label for="comp_sci">Took Foundations of Comp. Sci before 11th grade</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="world_lang" disabled>
+                        <label for="world_lang">3 years of a world language</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="science_courses" disabled>
+                        <label for="science_courses">Science courses post 9th grade/Biology (Chemistry, Physics, Geosystems)</label>
+                    </div>
+                     <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="epf" disabled>
+                        <label for="epf">Economics and Personal Finance OR AP Macro/Micro</label>
+                    </div>
+                     <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="calc" disabled>
+                        <label for="calc">AP Calc AB OR AP Calc BC</label>
+                    </div>
+                     <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="history_credit" disabled>
+                        <label for="history_credit">4th history credit</label>
+                    </div>
+                     <div class="flex items-center">
+                        <input type="checkbox" class="mr-2 rounded-md" id="credits" disabled>
+                        <label for="credits">At least 26 credits</label>
+                    </div>
+                </div>
+                <!-- Stats -->
+                <div class="hidden mt-4 ml-3" id="stats">
+                    <p class="inline"><b>APs: </b></p> <p class="inline" id="ap-count">0</p>
+                    <br>
+                    <p class="inline"><b>HNs: </b></p> <p class="inline" id="hn-count">0</p>
+                    <br>
+                    <p class="inline"><b>Courses: </b></p> <p class="inline" id="course-count">0 (0.0 credits)</p>
+                    <br>
+                    <p class="inline"><b>Max achievable GPA (assuming all A's): </b></p> <p class="inline" id="max-gpa">0.0</p>
+                    <br>
+                    <p class="inline"><b>Achievable GPA (assuming ~20% B's, ~80% A's): </b></p> <p class="inline" id="achievable-gpa">0.0</p>
+                    <br>
+                    <img alt="? Help" src="{% static "main/img/questionmark.png" %}" class="inline w-4 h-4 tooltip" data-tooltip="Only put the combined GPA of courses you took for high school credit"> <p class="inline"><b>Your middle school GPA: </b></p> <input class="inline w-16 max-h-5 rounded-md bg-gray-200" id="ms-gpa-input">
+                    <br>
+                    <br>
+                    <p class="inline ml-[40%] text-lg"><b>By category</b></p>
+                    <div class="flex flex-col">
+                        {% for category in categories %}
+                            {% if forloop.counter == 6 %}
+                                <br>
+                                <br>
+                            {% endif %}
+                            <p class="category-stat">
+                                <b>{{ category.name }}: </b>
+                                0</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Preferences -->
+                <div class="hidden ml-4" id="preferences">
+                    <div class="flex flex-col justify-between h-[85.3vh]">
+                        <div class="flex justify-between flex-col">
+                            {% include "checkbox.widget.html" with id="dark-mode-switch" label="Dark mode" %}
+                            {% include "checkbox.widget.html" with id="hide-course-id-switch" label="Hide course ids" %}
+                            {% include "checkbox.widget.html" with id="no-snackbar" label="Disable course verification (no snackbar)" %}
+                            {% include "checkbox.widget.html" with id="no-course-outlines" label="Disable course outlines" %}
+                            <label for="highest-math" class="mt-2">Highest level math course (taken in MS):</label>
+                            <select id="highest-math">
+                                <option value="alg1">Algebra 1</option>
+                                <option value="geo">Geometry</option>
+                                <option value="alg2">Algebra 2</option>
+                            </select>
+                        </div>
+                        <a class="mb-5 ml-[8.6vw] bg-red-300 rounded-lg w-40 h-10 flex items-center justify-center" href="https://github.com/aarushtools/tjplanner/issues">
+                            <p>Report issue</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <img src="{% static "main/img/arrow-nav.svg" %}" alt="arrow nav" class="w-10 h-10 mt-[39vh] hover:cursor-pointer transform transition-transform duration-500 ease-in-out absolute invert" id="arrow-nav" data-open="true">
+
+            <div class="flex mb-1">
+                <button class="bg-gray-300 h-10 w-1/3 rounded-bl-2xl outline outline-white font-bold tab-btn" data-tab="checklist">Checklist</button>
+                <button class="bg-gray-300 h-10 w-1/3 outline outline-white font-bold tab-btn" data-tab="stats">Stats</button>
+                <button class="bg-gray-300 h-10 w-1/3 rounded-br-2xl outline outline-white font-bold tab-btn" data-tab="preferences">Preferences</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" id="modal-overlay">
+        <div class="bg-white rounded-lg shadow-lg max-w-lg w-full">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold">Share / Export</h2>
+            </div>
+            <div class="p-6">
+                <input type="text" class="w-[90%] rounded-md bg-gray-200 inline" id="export-input" disabled>
+                <button class="inline bg-gray-200 w-8 rounded-md h-10 outline outline-black outline-1" id="copy-share-url">
+                    <img alt="Copy" src="{% static "main/img/copy.svg" %}" class="inline">
+                    <input type="hidden" id="copy-src" value="{% static "main/img/copy.svg" %}">
+                    <input type="hidden" id="copy-filled-src" value="{% static "main/img/copy-filled.svg" %}">
+                </button>
+            </div>
+            <div class="ml-7">
+                <p class="text-sm pb-4">Bookmark this page to save your current course selection</p>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-200 flex justify-end">
+                <button id="close-modal" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Close</button>
+            </div>
+        </div>
+    </div>
+    <div class="fixed inset-0 flex bg-black bg-opacity-50 hidden" id="tutorial">
+        <div class="ml-[28vw] mt-[20vh] bg-white h-14 w-80 items-center justify-center flex rounded-md hidden" id="t1">
+            <p class="text-black text-2xl">Drag and drop courses</p>
+            <button>
+                <img alt="Next" src="{% static "main/img/arrow-nav.svg" %}" class="w-7 h-7 invert rotate-180 ml-2" id="t1-next">
+            </button>
+            <img alt="Arrow" src="{% static "main/img/arrow-curved.png" %}" class="absolute h-4o w-64 mt-40 mr-96 -rotate-6">
+        </div>
+        <div class="ml-[28vw] mt-[20vh] bg-white h-14 items-center justify-center flex rounded-md hidden" id="t2">
+            <p class="text-black ml-2">9th through 12th grade. Each column represents a grade</p>
+            <button>
+                <img alt="Next" src="{% static "main/img/arrow-nav.svg" %}" class="w-7 h-7 invert rotate-180 ml-2" id="t2-next">
+            </button>
+        </div>
+
+    </div>
+{% endblock %}
