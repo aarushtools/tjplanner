@@ -29,9 +29,9 @@
                 {{ course.course_id }}
             </p>
             {% if course.course_offered == "ONLINE" %}
-                <img alt="online" src="{% static "main/img/online.svg" %}" class="w-4 h-4 ml-1">
+                <img alt="online" src="{% static "main/img/online.svg" %}" class="w-4 h-4 ml-1 tooltip" data-tooltip="This course is offered online (Online)">
             {% elif course.course_offered == "ACADEMY" %}
-                <img alt="academy" src="{% static "main/img/bus.png" %}" class="w-4 h-4 ml-1">
+                <img alt="academy" src="{% static "main/img/bus.png" %}" class="w-4 h-4 ml-1 tooltip" data-tooltip="This course is offered at another school, but you can take it via bus transportation (Academy)">
             {% endif %}
             {% if course.course_type == "AP" %}
                 <p class="text-red-600 font-bold inline ml-1">
