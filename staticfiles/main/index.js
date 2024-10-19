@@ -1030,6 +1030,7 @@ function initTutorial() {
     let tutorial = $("#tutorial").removeClass("hidden");
     let t1 = $("#t1");
     let t2 = $("#t2");
+    let t3 = $("#t3");
 
     t1.removeClass("hidden");
 
@@ -1039,6 +1040,11 @@ function initTutorial() {
     })
 
     $("#t2-next").on("click", function() {
+        t2.remove();
+        t3.removeClass("hidden");
+    })
+
+    $("#t3-next").on("click", function() {
         tutorial.remove();
     })
 }
