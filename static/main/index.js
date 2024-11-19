@@ -843,7 +843,7 @@ function verifyRequirements(courseDict) {
             eng10 = true;
         }
 
-        else if (course["name"].includes("US VA") && 12 > course["grade"] > 9) {
+        else if ((course["name"].includes("US VA") || course["name"].includes("AP US")) && 12 > course["grade"] > 9) {
             socialStudiesCredits += course["credit"];
             usVaHist = true;
         } else if (course["name"].includes("English 11") && course["grade"] === 11) {
