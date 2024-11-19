@@ -16,6 +16,7 @@ class Command(BaseCommand):
 
         insys_api = InsysAPI(location_id=503)
         courses = insys_api.get_course_list()["data"]
+        course_counter = 0
 
         for i in range(len(courses["categories"])):
             cat_courses = courses["categories"][i]
@@ -79,9 +80,11 @@ class Command(BaseCommand):
                     prereq_ids=prereq_ids,
                     coreq_ids=coreq_ids,
                     number=course_detailed_info["id"],
+                    sort=course_counter
                 )
 
                 print(f"Created course {course["name"]}")
+                course_counter += 1
 
         print("Created courses")
 

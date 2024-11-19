@@ -41,6 +41,7 @@ class Course(models.Model):
     prereq_ids = models.TextField(blank=True, null=True, default="None")
     coreq_ids = models.TextField(blank=True, null=True, default="None")
     number = models.CharField(max_length=8)
+    sort = models.IntegerField()
 
     @property
     def grades(self):
